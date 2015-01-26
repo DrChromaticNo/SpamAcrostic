@@ -8,7 +8,7 @@ public class TrieBuilder {
 
 	public static void main(String[] args)
 	{
-		TrieBuilder test = new TrieBuilder(new File("dictionaries/dict.txt"));
+		TrieBuilder test = new TrieBuilder(new File("dictionaries/test_dict.txt"));
 		DictTrie root = test.build();
 		System.out.println(root);
 	}

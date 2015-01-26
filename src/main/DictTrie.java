@@ -13,6 +13,7 @@ public class DictTrie {
 	{
 		this.letter = letter;
 		this.children = new HashMap<Character, DictTrie>();
+		this.isWord = false;
 	}
 	
 	public boolean isWord()
@@ -41,7 +42,14 @@ public class DictTrie {
 	
 	public DictTrie getChild(char letter)
 	{
-		return children.get(letter);
+		if(children.containsKey(letter))
+		{
+			return children.get(letter);
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	public void addChild(char letter, DictTrie child)
