@@ -13,37 +13,38 @@ public class AcrosticFinder {
 	private ArrayList<Character> letters;
 	private static DictTrie root;
 	
-	public AcrosticFinder()
+	public AcrosticFinder(File file)
 	{
 		TrieBuilder builder = new TrieBuilder(new File("dictionaries/dict.txt"));
 		root = builder.build();
-	}
-	
-	public static void main(String[] args)
-	{
-		AcrosticFinder finder = new AcrosticFinder();
+		
+		text = new ArrayList<String>();
+		letters = new ArrayList<Character>();
+		Scanner scanner;
 		try {
-			finder.findWithSkips(new File("inputs/trial.txt"), 4,3);
+			scanner = new Scanner(file);
+			while(scanner.hasNext())
+			{
+				String word = scanner.next();
+				text.add(word);
+				letters.add(word.toLowerCase().charAt(0));
+			}
+			scanner.close();
+			System.out.println(text);
+			System.out.println(letters);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void find(File file, int min) throws FileNotFoundException
+	public static void main(String[] args)
+	{
+		AcrosticFinder finder = new AcrosticFinder(new File("inputs/trial.txt"));
+		finder.findWithSkips(4,3);
+	}
+	
+	public void find(int min)
 	{	
-		text = new ArrayList<String>();
-		letters = new ArrayList<Character>();
-		Scanner scanner = new Scanner(file);
-		while(scanner.hasNext())
-		{
-			String word = scanner.next();
-			text.add(word);
-			letters.add(word.charAt(0));
-		}
-		scanner.close();
-		System.out.println(text);
-		System.out.println(letters);
-		
 		HashMap<String, HashSet<ArrayList<String>>> findings = 
 				new HashMap<String, HashSet<ArrayList<String>>>();
 		
@@ -79,21 +80,8 @@ public class AcrosticFinder {
 		System.out.println(findings);
 	}
 	
-	public void findWithSkips(File file, int minLength, int maxSkips) throws FileNotFoundException
-	{
-		text = new ArrayList<String>();
-		letters = new ArrayList<Character>();
-		Scanner scanner = new Scanner(file);
-		while(scanner.hasNext())
-		{
-			String word = scanner.next();
-			text.add(word);
-			letters.add(word.charAt(0));
-		}
-		scanner.close();
-		System.out.println(text);
-		System.out.println(letters);
-		
+	public void findWithSkips(int minLength, int maxSkips)
+	{	
 		HashMap<String, HashSet<ArrayList<ArrayList<String>>>> findings = 
 				new HashMap<String, HashSet<ArrayList<ArrayList<String>>>>();
 		
