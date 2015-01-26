@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
-import java.util.Set;
 
 public class AcrosticFinder {
 	
@@ -24,13 +23,13 @@ public class AcrosticFinder {
 	{
 		AcrosticFinder finder = new AcrosticFinder();
 		try {
-			finder.find(new File("inputs/test.txt"));
+			finder.findWithSkips(new File("inputs/trial.txt"), 4,3);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void find(File file) throws FileNotFoundException
+	public void find(File file, int min) throws FileNotFoundException
 	{	
 		text = new ArrayList<String>();
 		letters = new ArrayList<Character>();
@@ -57,7 +56,7 @@ public class AcrosticFinder {
 			{
 				node = node.getChild(letter);
 				//Check to see if we've found a word
-				if(node.isWord())
+				if(node.isWord() && node.getWord().length() > min)
 				{
 					String word = node.getWord();
 					//Then we store it
@@ -78,5 +77,97 @@ public class AcrosticFinder {
 		}
 		
 		System.out.println(findings);
+	}
+	
+	public void findWithSkips(File file, int minLength, int maxSkips) throws FileNotFoundException
+	{
+		text = new ArrayList<String>();
+		letters = new ArrayList<Character>();
+		Scanner scanner = new Scanner(file);
+		while(scanner.hasNext())
+		{
+			String word = scanner.next();
+			text.add(word);
+			letters.add(word.charAt(0));
+		}
+		scanner.close();
+		System.out.println(text);
+		System.out.println(letters);
+		
+		HashMap<String, HashSet<ArrayList<ArrayList<String>>>> findings = 
+				new HashMap<String, HashSet<ArrayList<ArrayList<String>>>>();
+		
+		for(int i = 0; i < letters.size(); i++)
+		{
+			if(root.getChild(letters.get(i)) != null)
+			{
+				HashMap<String, HashSet<ArrayList<ArrayList<String>>>> results = 
+						findWithSkipsHelper(root.getChild(letters.get(i)), 
+						new ArrayList<ArrayList<String>>(), 
+						i, maxSkips, minLength);
+				
+				for(String key: results.keySet())
+				{
+					if(!findings.containsKey(key))
+					{
+						findings.put(key, new HashSet<ArrayList<ArrayList<String>>>());
+					}
+					findings.get(key).addAll(results.get(key));
+				}
+			}
+		}
+		
+		System.out.println(findings);
+	}
+	
+	private HashMap<String, HashSet<ArrayList<ArrayList<String>>>> findWithSkipsHelper(DictTrie root, 
+			ArrayList<ArrayList<String>> acrostic, 
+			int index, int maxSkips, int minLength)
+	{
+		HashMap<String, HashSet<ArrayList<ArrayList<String>>>> results = 
+				new HashMap<String, HashSet<ArrayList<ArrayList<String>>>>();
+		
+		if(root.isWord() && root.getWord().length() > minLength)
+		{
+			String word = root.getWord();
+			if(!results.containsKey(word))
+			{
+				results.put(word, new HashSet<ArrayList<ArrayList<String>>>());
+			}
+			ArrayList<String> added = new ArrayList<String>();
+			added.add(text.get(index));
+			acrostic.add(added);
+			results.get(word).add(acrostic);
+		}
+		
+		for(int i = 0; i < maxSkips+1; i++)
+		{
+			//Find what our new letter is
+			if(index+i+1 < letters.size())
+			{
+				char letter = letters.get(index+i+1);
+				DictTrie node = root.getChild(letter);
+				if(node != null)
+				{
+					//Try skipping ahead
+					ArrayList<ArrayList<String>> passed = new ArrayList<ArrayList<String>>(acrostic);
+					passed.add(new ArrayList<String>(text.subList(index, index+i+1)));
+					
+					HashMap<String, HashSet<ArrayList<ArrayList<String>>>> findings = 
+							findWithSkipsHelper(node, passed, index+i+1, maxSkips, minLength);
+					
+					//Then merge findings into results
+					for(String key: findings.keySet())
+					{
+						if(!results.containsKey(key))
+						{
+							results.put(key, new HashSet<ArrayList<ArrayList<String>>>());
+						}
+						results.get(key).addAll(findings.get(key));
+					}
+				}
+			}
+		}
+		return results;
 	}
 }
