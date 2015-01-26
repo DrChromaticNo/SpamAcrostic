@@ -49,4 +49,21 @@ public class DictTrie {
 		children.put(letter, child);
 	}
 	
+	@Override
+	public String toString()
+	{
+		String output = "";
+		if(word != null)
+		{
+			output = output + "Word: " + word;
+		}
+		output = output + " Letter: " + letter;
+		output = output + " Children: ";
+		for(char letter:children.keySet())
+		{
+			output = output + letter + ",";
+		}
+		return output;
+	}
+	
 }
