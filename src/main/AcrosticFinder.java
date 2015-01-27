@@ -105,7 +105,7 @@ public class AcrosticFinder {
 			}
 		}
 		
-		System.out.println(findings);
+		nicePrint(findings);
 	}
 	
 	private HashMap<String, HashSet<ArrayList<ArrayList<String>>>> findWithSkipsHelper(DictTrie root, 
@@ -157,5 +157,26 @@ public class AcrosticFinder {
 			}
 		}
 		return results;
+	}
+	
+	private void nicePrint(HashMap<String, HashSet<ArrayList<ArrayList<String>>>> findings)
+	{
+		for(String key: findings.keySet())
+		{
+			for(ArrayList<ArrayList<String>> result: findings.get(key))
+			{
+				System.out.println(" ");
+				System.out.println(key);
+				for(ArrayList<String> line: result)
+				{
+					String output = "";
+					for(String word: line)
+					{
+						output = output + word + " ";
+					}
+					System.out.println(output);
+				}
+			}
+		}
 	}
 }
