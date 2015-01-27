@@ -40,7 +40,7 @@ public class AcrosticFinder {
 	public static void main(String[] args)
 	{
 		AcrosticFinder finder = new AcrosticFinder(new File("inputs/trial.txt"));
-		finder.findWithSkips(4,3);
+		finder.findWithSkips(7,3);
 	}
 	
 	public void find(int min)
