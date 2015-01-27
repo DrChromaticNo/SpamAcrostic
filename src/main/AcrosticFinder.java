@@ -40,44 +40,12 @@ public class AcrosticFinder {
 	public static void main(String[] args)
 	{
 		AcrosticFinder finder = new AcrosticFinder(new File("inputs/trial.txt"));
-		finder.findWithSkips(7,3);
+		finder.find(4);
 	}
 	
 	public void find(int min)
 	{	
-		HashMap<String, HashSet<ArrayList<String>>> findings = 
-				new HashMap<String, HashSet<ArrayList<String>>>();
-		
-		for(int i = 0; i < letters.size(); i++)
-		{
-			char letter = letters.get(i);
-			int index = i;
-			DictTrie node = root;
-			while(node.getChild(letter) != null && index < letters.size())
-			{
-				node = node.getChild(letter);
-				//Check to see if we've found a word
-				if(node.isWord() && node.getWord().length() > min)
-				{
-					String word = node.getWord();
-					//Then we store it
-					if(!findings.containsKey(word))
-					{
-						findings.put(word, new HashSet<ArrayList<String>>());
-					}
-					ArrayList<String> acrostic = new ArrayList<String>(text.subList(i, index+1));
-					findings.get(word).add(acrostic);
-				}
-				//Move on to next letter
-				index++;
-				if(index < letters.size())
-				{
-					letter = letters.get(index);
-				}
-			}
-		}
-		
-		System.out.println(findings);
+		findWithSkips(min, 0);
 	}
 	
 	public void findWithSkips(int minLength, int maxSkips)
