@@ -92,8 +92,9 @@ public class AcrosticFinder {
 			}
 			ArrayList<String> added = new ArrayList<String>();
 			added.add(text.get(index));
-			acrostic.add(added);
-			results.get(word).add(acrostic);
+			ArrayList<ArrayList<String>> newResult = new ArrayList<ArrayList<String>>(acrostic);
+			newResult.add(added);
+			results.get(word).add(newResult);
 		}
 		
 		for(int i = 0; i < maxSkips+1; i++)

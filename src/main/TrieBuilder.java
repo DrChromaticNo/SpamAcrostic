@@ -32,6 +32,7 @@ public class TrieBuilder {
 				String word = scanner.next();
 				if(word.indexOf('\'') == -1)
 				{
+					word = word.toLowerCase();
 					root = buildHelp(word, 0, root);
 				}
 			}
