@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class AcrosticFinder {
@@ -40,15 +41,15 @@ public class AcrosticFinder {
 	public static void main(String[] args)
 	{
 		AcrosticFinder finder = new AcrosticFinder(new File("inputs/trial.txt"));
-		finder.find(4);
+		finder.findWithSkips(7, 3, true);
 	}
 	
-	public void find(int min)
+	public void find(int min, boolean dupes)
 	{	
-		findWithSkips(min, 0);
+		findWithSkips(min, 0, dupes);
 	}
 	
-	public void findWithSkips(int minLength, int maxSkips)
+	public void findWithSkips(int minLength, int maxSkips, boolean dupes)
 	{	
 		HashMap<String, HashSet<ArrayList<ArrayList<String>>>> findings = 
 				new HashMap<String, HashSet<ArrayList<ArrayList<String>>>>();
@@ -69,6 +70,20 @@ public class AcrosticFinder {
 						findings.put(key, new HashSet<ArrayList<ArrayList<String>>>());
 					}
 					findings.get(key).addAll(results.get(key));
+				}
+				
+				if(!dupes)
+				{
+					for(String key: findings.keySet())
+					{
+						if(findings.get(key).size() > 1)
+						{
+							Iterator<ArrayList<ArrayList<String>>> iter = findings.get(key).iterator();
+							HashSet<ArrayList<ArrayList<String>>> deDuped = new HashSet<ArrayList<ArrayList<String>>>();
+							deDuped.add(iter.next());
+							findings.put(key, deDuped);
+						}
+					}
 				}
 			}
 		}
