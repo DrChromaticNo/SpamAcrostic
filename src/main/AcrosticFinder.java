@@ -101,6 +101,10 @@ public class AcrosticFinder {
 	 */
 	public void findWithSkips(int minLength, int maxSkips, boolean dupes)
 	{	
+		//Solves edge condition with negative max skips
+		if(maxSkips < 0)
+			maxSkips = 0;
+		
 		//This map will contain the results.
 		//The complicated type is a map that maps
 		//Acrostic Word -> Sets of possible poems which are arrays (each of which represents a line) of arrays (each of which represents the words on that line)
