@@ -47,10 +47,40 @@ public class AcrosticFinder {
 		}
 	}
 	
+	/**
+	 * Runs acrostic finder from command line
+	 * @param args Of the form filepath dd (for optional dedupe) minLength maxSkips(optional, defaults to 0)
+	 */
 	public static void main(String[] args)
 	{
-		AcrosticFinder finder = new AcrosticFinder(new File("inputs/trial.txt"));
-		finder.findWithSkips(7, 3, true);
+		String filePath = args[0];
+		File file = new File(filePath);
+		
+		boolean dupes = true;
+		int minLength = 0;
+		int maxSkips = 0;
+		//Look for dedupe flag
+		if(args[1].equals("dd"))
+		{
+			dupes = false;
+			minLength = Integer.parseInt(args[2]);
+			if(args.length >= 4)
+			{
+				maxSkips = Integer.parseInt(args[3]);
+			}
+			
+		}
+		else
+		{
+			minLength = Integer.parseInt(args[1]);
+			if(args.length >= 3)
+			{
+				maxSkips = Integer.parseInt(args[2]);
+			}
+		}
+		
+		AcrosticFinder finder = new AcrosticFinder(file);
+		finder.findWithSkips(minLength, maxSkips, dupes);
 	}
 	
 	/**
