@@ -1,8 +1,10 @@
 # SpamAcrostic
 This is a java program to find acrostic poems in text files.  You can run it from the command line and it outputs to stdout.
 
-The formatting should be 
+The formatting should be:
+
 "java AcrosticFinder.java 
+
 (filepath to the text to find poems in)
 
 ("dd" if you want to dedupe the resulting acrostic words, optional)
