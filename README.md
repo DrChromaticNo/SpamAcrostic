@@ -12,3 +12,5 @@ The formatting should be:
 (int for the min length of acrostic words)
 
 (int for the max words per line of the poem, optional, defaults to 0)"
+
+Inspired by @acrostik on twitter, by @thricedotted
